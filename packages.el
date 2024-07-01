@@ -5,6 +5,7 @@
 (package! robe :disable t)
 
 (package! rails-routes :pin "eab995a9297ca5bd9bd4f4c2737f2fecfc36def0")
+(package! ruby-json-to-hash :pin "383b22bb2e007289ac0dba146787d02ff99d4415")
 (package! rails-i18n :pin "8e87e4e48e31902b8259ded28a208c2e7efea6e9")
 (package! multi-line :pin "625c608443f98bb34b4d5600d52c198509fb64d0")
 (package! ruby-refactor :pin "e6b7125878a08518bffec6942df0c606f748e9ee")
