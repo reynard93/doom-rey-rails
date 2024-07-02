@@ -1,5 +1,5 @@
 ;; MOST IMPORTANT CONFIG - Set your project folders
-(setq projectile-project-search-path '("~/Desktop", "~/Projects"))
+(setq projectile-project-search-path '("~/Desktop/formflow-mono", "~/Projects"))
 
 (setq user-full-name "Reynard Lee Yu Ling"
       user-mail-address "reynard.lee@thoughtworks.com.sg")
@@ -11,6 +11,8 @@
 ;; Set your theme
 (setq doom-theme 'doom-one)
 
+(setq doom-font (font-spec :family "BerkeleyMono Nerd Font" :size 14 :weight 'bold) ;; You can change to regular if you prefer
+      doom-variable-pitch-font (font-spec :family "BerkeleyMono Nerd Font" :size 14))
 ;; My recommendation is JetBrains Mono.  Use M-x reload-user-settings to see the font change.
 ;; (setq doom-font (font-spec :family "JetBrains Mono" :size 13 :weight 'bold) ;; You can change to regular if you prefer
 ;;       doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 13))
@@ -176,8 +178,48 @@
 ;; undo evil keybindings
 ;; https://www.reddit.com/r/DoomEmacs/comments/11owa7a/overriding_doom_emacs_key_binding/
 (map! :after evil
-      :n "M-h" #'yabai-window-left
-      :n "M-j" #'yabai-window-down
-      :n "M-k" #'yabai-window-up
-      :n "M-l" #'yabai-window-right
-      :n "M-f" #'yabai-fullscreen)
+      :ngi "M-h" #'yabai-window-left
+      :ngi "M-j" #'yabai-window-down
+      :ngi "M-k" #'yabai-window-up
+      :ngi "M-l" #'yabai-window-right
+      :ngi "M-f" #'yabai-fullscreen)
+
+;; to bind additional leader keys
+(map! :leader
+      ;; "x" #'dosomething
+      )
+
+(setq auto-save-default t)
+;;org-mode
+(setq org-superstar-headline-bullets-list '("✿" "✸" "◉" "⁖" "○" ))
+;;(setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s!)" "WAITING(w@/!)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")))
+(setf org-todo-keyword-faces '(("TODO" . (:foreground "white" :background "#95A5A6"))("STRT". (:foreground "white" :background "#2E8B57"))("DONE" . (:foreground "white" :background "#3498DB"))))
+(setq org-log-done 'time)
+(setq org-cycle-include-plain-lists t)
+(setq org-export-coding-system 'utf-8)
+(setq org-src-fontify-natively t)
+(setq org-html-doctype "html5")
+(setq org-html-xml-declaration nil)
+(setq org-html-head "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css' integrity='sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn' crossorigin='anonymous'>\n<script src='https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous'></script>\n<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js' integrity='sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2' crossorigin='anonymous'></script>")
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (c . t)
+   (java . t)
+   (go . t)
+   (racket . t)
+   (python . t)
+   (latex . t)
+   (shell . t)
+   (js . t)
+   (lisp . t)
+   (scheme . t)))
+(setq-default prettify-symbols-alist '(("#+BEGIN_SRC" . "†")("#+END_SRC" . "†")("#+begin_src" . "†") ("#+end_src" . "†") (">=" . "≥")("=>" . "⇨")))
+(setq prettify-symbols-unprettify-at-point 'right-edge)
+(add-hook 'org-mode-hook 'prettify-symbols-mode)
+(setq org-adapt-indentation nil)
+
+;; elfeed
+(setq elfeed-db-directory "~/org/elfeed")
+(setq rmh-elfeed-org-files (list "~/org/elfeed/elfeed.org"))
+(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
