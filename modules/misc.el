@@ -25,21 +25,21 @@
 (map! :leader :desc "Upgrade Doom Emacs on Rails" "h U" #'upgrade-doom-emacs-on-rails)
 (map! :leader :desc "Visit handbook" "f h" #'visit-handbook)
 
-(defun visit-handbook ()
-  "Visit the user-settings.el."
-  (interactive)
-  (find-file (concat doom-private-dir "docs/emacs-handbook.org"))
-  (message "Welcome to Doom Emacs Handbook!")
-  (read-only-mode))
+;; (defun visit-handbook ()
+;;   "Visit the user-settings.el."
+;;   (interactive)
+;;   (find-file (concat doom-private-dir "docs/emacs-handbook.org"))
+;;   (message "Welcome to Doom Emacs Handbook!")
+;;   (read-only-mode))
 
 
-(add-to-list '+doom-dashboard-menu-sections '("Open Doom Emacs on Rails Handbook"
-                                              :icon (all-the-icons-octicon "ruby" :face 'doom-dashboard-menu-title)
-                                              :action visit-handbook) t)
+;; (add-to-list '+doom-dashboard-menu-sections '("Open Doom Emacs on Rails Handbook"
+;;                                               :icon (all-the-icons-octicon "ruby" :face 'doom-dashboard-menu-title)
+;;                                               :action visit-handbook) t)
 
-(add-to-list '+doom-dashboard-menu-sections '("Upgrade Doom Emacs On Rails"
-                                              :icon (all-the-icons-octicon "cloud-upload" :face 'doom-dashboard-menu-title)
-                                              :action upgrade-doom-emacs-on-rails) t)
+;; (add-to-list '+doom-dashboard-menu-sections '("Upgrade Doom Emacs On Rails"
+;;                                               :icon (all-the-icons-octicon "cloud-upload" :face 'doom-dashboard-menu-title)
+;;                                               :action upgrade-doom-emacs-on-rails) t)
 
 ;; Just close emacs please
 (setq confirm-kill-emacs nil)
