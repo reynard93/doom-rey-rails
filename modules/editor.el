@@ -140,10 +140,10 @@
   (map! :map tide-mode-map :localleader "F" #'tide-rename-file))
 
 (after! evil-org
-  (map! :map evil-org-mode-map :niv "M-k" #'evil-window-up)
-  (map! :map evil-org-mode-map :niv "M-j" #'evil-window-down)
-  (map! :map evil-org-mode-map :niv "M-h" #'evil-window-left)
-  (map! :map evil-org-mode-map :niv "M-l" #'evil-window-right)
+  ;; (map! :map evil-org-mode-map :niv "M-k" #'evil-window-up)
+  ;; (map! :map evil-org-mode-map :niv "M-j" #'evil-window-down)
+  ;; (map! :map evil-org-mode-map :niv "M-h" #'evil-window-left)
+  ;; (map! :map evil-org-mode-map :niv "M-l" #'evil-window-right)
   (map! :map evil-org-mode-map :niv "C-M-k" #'org-metaup)
   (map! :map evil-org-mode-map :niv "C-M-j" #'org-metadown))
 

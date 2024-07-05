@@ -20,7 +20,7 @@
 
        :ui
        doom              ; what makes DOOM look the way it does
-       ;; doom-dashboard    ; a nifty splash screen for Emacs
+       doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        modeline          ; snazzy, Atom-inspired modeline, plus API
@@ -32,7 +32,7 @@
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :editor
-       (evil +everywhere); come to the dark side, we have cookies
+       ;; (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        format          ; automated prettiness
@@ -66,9 +66,8 @@
        emacs-lisp        ; drown in parentheses
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        markdown          ; writing docs for people to ignore
-       org               ; organize your plain life in plain text
        sh                ; she sells {ba,z,fi}sh shells on the C xor
-       solidity          ; do you need a blockchain? No.
+       ;; solidity          ; do you need a blockchain? No.
        (web +lsp)               ; the tubes
        (yaml +lsp)
        (json +lsp)              ; At least it ain't XML

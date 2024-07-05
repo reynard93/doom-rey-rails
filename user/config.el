@@ -20,6 +20,8 @@
 ;; How do you want to display lien numbers?
 (setq display-line-numbers-type t)
 
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -175,7 +177,6 @@
   (interactive)
   (start-process "yabai" nil "yabai" "-m" "window" "--toggle" "zoom-fullscreen"))
 
-;; undo evil keybindings
 ;; https://www.reddit.com/r/DoomEmacs/comments/11owa7a/overriding_doom_emacs_key_binding/
 ;; https://discourse.doomemacs.org/t/how-to-bind-keys-with-higher-precedence-than-evil-keybindings/3743/3 (see the states avail)
 (map! :after evil
@@ -184,14 +185,19 @@
       :ngi "M-k" #'yabai-window-up
       :ngi "M-l" #'yabai-window-right
       :ngi "M-f" #'yabai-fullscreen)
+;; if i remove evil then i can just setup as per normal from my crafted one
 
 ;; read My new keybinds don't work on https://github.com/doomemacs/doomemacs/blob/35865ef5e89442e3809b8095199977053dd4210f/docs/faq.org#my-new-keybinds-dont-work
-(map! :map evil-org-mode-map
-      "M-h" nil
-      "M-j"  nil
-      "M-k"  nil
-      "M-l"  nil
-      "M-f" )
+(map! :after evil
+      :map evil-org-mode-map
+      :ngivo "M-h" nil
+      :ngivo "M-j" nil
+      :ngivo "M-k" nil
+      :ngivo "M-l" nil)
+
+;; using for yabai left
+(map!
+ "M-h" nil)
 
 (setq auto-save-default t)
 ;;org-mode
@@ -233,3 +239,6 @@
                "b" #'display-in-side-window--bottom
                "l" #'display-in-side-window--left
                "r" #'display-in-side-window--right))
+
+(use-package! elaiza
+  :config (setq elaiza-default-model (make-elaiza-gpt-4o)))
