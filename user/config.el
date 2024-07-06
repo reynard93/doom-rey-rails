@@ -17,16 +17,9 @@
 ;; (setq doom-font (font-spec :family "JetBrains Mono" :size 13 :weight 'bold) ;; You can change to regular if you prefer
 ;;       doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 13))
 
-;; How do you want to display lien numbers?
 (setq display-line-numbers-type t)
 
 (setq mac-option-modifier 'super)
-(setq mac-command-modifier 'meta)
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-
 ;; TERMINAL MANAGEMENT STUFF ;;
 ;; Predefined commands
 ;; You can switch to any terminal with SPC l
@@ -150,6 +143,7 @@
 (setq-hook! 'rjsx-mode-hook +format-with 'prettier)
 (setq-hook! 'typescript-tsx-mode-hook +format-with 'prettier)
 (setq-hook! 'typescript-mode-hook +format-with 'prettier) 
+;; read My new keybinds don't https://github.com/doomemacs/doomemacs/blob/35865ef5e89442e3809b8095199977053dd4210f/docs/faq.org#my-new-keybinds-dont-work
 
 (defun yabai-move-on-error (direction move-fn)
   (interactive)
@@ -159,41 +153,38 @@
 
 (defun yabai-window-left ()
   (interactive)
-  (yabai-move-on-error "west" #'(lambda () (evil-window-left 1))))
+  (yabai-move-on-error "west" #'windmove-left))
 
 (defun yabai-window-right ()
   (interactive)
-  (yabai-move-on-error "east" #'(lambda () (evil-window-right 1))))
+  (yabai-move-on-error "east" #'windmove-right))
 
 (defun yabai-window-up ()
   (interactive)
-  (yabai-move-on-error "north" #'(lambda () (evil-window-up 1))))
+  (yabai-move-on-error "north" #'windmove-up))
 
 (defun yabai-window-down ()
   (interactive)
-  (yabai-move-on-error "south" #'(lambda () (evil-window-up 1))))
+  (yabai-move-on-error "south" #'windmove-down))
 
 (defun yabai-fullscreen ()
   (interactive)
   (start-process "yabai" nil "yabai" "-m" "window" "--toggle" "zoom-fullscreen"))
 
-;; https://www.reddit.com/r/DoomEmacs/comments/11owa7a/overriding_doom_emacs_key_binding/
-;; https://discourse.doomemacs.org/t/how-to-bind-keys-with-higher-precedence-than-evil-keybindings/3743/3 (see the states avail)
-(map! :after evil
-      :ngi "M-h" #'yabai-window-left
-      :ngi "M-j" #'yabai-window-down
-      :ngi "M-k" #'yabai-window-up
-      :ngi "M-l" #'yabai-window-right
-      :ngi "M-f" #'yabai-fullscreen)
-;; if i remove evil then i can just setup as per normal from my crafted one
+;; (setq mac-option-modifier nil)
+(map!  "s-h" #'yabai-window-left
+       "s-j" #'yabai-window-down
+       "s-k" #'yabai-window-up
+       "s-l" #'yabai-window-right
+       "s-f" #'yabai-fullscreen)
 
-;; read My new keybinds don't work on https://github.com/doomemacs/doomemacs/blob/35865ef5e89442e3809b8095199977053dd4210f/docs/faq.org#my-new-keybinds-dont-work
-;; (map! :after evil
-;;       :map evil-org-mode-map
-;;       :ngivo "M-h" nil
-;;       :ngivo "M-j" nil
-;;       :ngivo "M-k" nil
-;;       :ngivo "M-l" nil)
+(map! :after evil
+      :map evil-org-mode-map
+      :ngivo "s-h" nil
+      :ngivo "s-j" nil
+      :ngivo "s-k" nil
+      :ngivo "s-l" nil
+      :ngivo "s-f" nil)
 
 ;; using for yabai left
 ;; (map!
