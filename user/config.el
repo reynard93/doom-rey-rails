@@ -233,3 +233,7 @@
 
 (use-package! elaiza
   :config (setq elaiza-default-model (make-elaiza-claude-opus)))
+
+(use-package! unity
+  :defer t
+  :config (add-hook 'after-init-hook #'unity-mode))
