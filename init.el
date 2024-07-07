@@ -16,7 +16,7 @@
 
 (doom! :completion
        company           ; the ultimate code completion backend
-       vertico           ; the search engine of the future
+       ;; vertico           ; the search engine of the future
 
        :ui
        doom              ; what makes DOOM look the way it does
@@ -55,7 +55,7 @@
        :tools
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       lsp               ; M-x vscode
+       lsp                 ; M-x vscode
        magit             ; a git porcelain for Emacs
 
        :os
