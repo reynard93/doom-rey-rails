@@ -288,3 +288,33 @@
                port 5678
                :request "attach"
                ))
+
+(use-package! ready-player
+  :init
+  (when (memq system-type '(darwin))
+    (set-fontset-font t nil "SF Pro Display" nil 'append))
+  :config
+  (ready-player-add-to-auto-mode-alist))
+
+
+
+;; ──────────────────────────────── Transparency ───────────────────────────────
+(set-frame-parameter (selected-frame) 'alpha 90)
+(add-to-list 'default-frame-alist '(alpha . 90))
+
+;; (set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+;; (set-frame-parameter (selected-frame) 'alpha <both>)
+
+;; Use the following snippet after you’ve set the alpha value
+(defun toggle-transparency ()
+  "Crave for transparency!"
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (set-frame-parameter
+     nil 'alpha
+     (if (eql (cond ((numberp alpha) alpha)
+                    ((numberp (cdr alpha)) (cdr alpha))
+                    ;; Also handle undocumented (<active> <inactive>) form.
+                    ((numberp (cadr alpha)) (cadr alpha)))
+              100)
+         90 '(100 . 100)))))
