@@ -171,20 +171,20 @@
   (interactive)
   (start-process "yabai" nil "yabai" "-m" "window" "--toggle" "zoom-fullscreen"))
 
-;; (setq mac-option-modifier nil)
-(map!  "s-h" #'yabai-window-left
-       "s-j" #'yabai-window-down
-       "s-k" #'yabai-window-up
-       "s-l" #'yabai-window-right
-       "s-f" #'yabai-fullscreen)
+(setq mac-option-modifier 'alt)
+(map!  "A-h" #'yabai-window-left
+       "A-j" #'yabai-window-down
+       "A-k" #'yabai-window-up
+       "A-l" #'yabai-window-right
+       "A-f" #'yabai-fullscreen)
 
-(map! :after evil
-      :map evil-org-mode-map
-      :ngivo "s-h" nil
-      :ngivo "s-j" nil
-      :ngivo "s-k" nil
-      :ngivo "s-l" nil
-      :ngivo "s-f" nil)
+;; (map! :after evil
+;;       :map evil-org-mode-map
+;;       :ngivo "s-h" nil
+;;       :ngivo "s-j" nil
+;;       :ngivo "s-k" nil
+;;       :ngivo "s-l" nil
+;;       :ngivo "s-f" nil)
 
 ;; using for yabai left
 ;; (map!
@@ -231,44 +231,9 @@
                "l" #'display-in-side-window--left
                "r" #'display-in-side-window--right))
 
-(use-package! elaiza
-  :config (setq elaiza-default-model (make-elaiza-claude-opus)))
-
 (use-package! unity
   :defer t
   :config (add-hook 'after-init-hook #'unity-mode))
-
-;; (map!
-;;  :map dap-mode-map
-;;  :leader
-;;  (:prefix ("d" . "dap")
-;;   ;; basics
-;;   :desc "dap next"          "n" #'dap-next
-;;   :desc "dap step in"       "i" #'dap-step-in
-;;   :desc "dap step out"      "o" #'dap-step-out
-;;   :desc "dap continue"      "c" #'dap-continue
-;;   :desc "dap hydra"         "h" #'dap-hydra
-;;   :desc "dap debug restart" "r" #'dap-debug-restart
-;;   :desc "dap debug"         "s" #'dap-debug
-
-;;   ;; debug
-;;   :prefix ("dd" . "Debug")
-;;   :desc "dap debug recent"  "r" #'dap-debug-recent
-;;   :desc "dap debug last"    "l" #'dap-debug-last
-
-;;   ;; eval
-;;   :prefix ("de" . "Eval")
-;;   :desc "eval"                "e" #'dap-eval
-;;   :desc "eval region"         "r" #'dap-eval-region
-;;   :desc "eval thing at point" "s" #'dap-eval-thing-at-point
-;;   :desc "add expression"      "a" #'dap-ui-expressions-add
-;;   :desc "remove expression"   "d" #'dap-ui-expressions-remove
-
-;;   :prefix ("db" . "Breakpoint")
-;;   :desc "dap breakpoint toggle"      "b" #'dap-breakpoint-toggle
-;;   :desc "dap breakpoint condition"   "c" #'dap-breakpoint-condition
-;;   :desc "dap breakpoint hit count"   "h" #'dap-breakpoint-hit-condition
-;;   :desc "dap breakpoint log message" "l" #'dap-breakpoint-log-message))
 
 (use-package! dape
   :config
@@ -299,8 +264,8 @@
 
 
 ;; ──────────────────────────────── Transparency ───────────────────────────────
-(set-frame-parameter (selected-frame) 'alpha 90)
-(add-to-list 'default-frame-alist '(alpha . 90))
+(set-frame-parameter (selected-frame) 'alpha 96)
+(add-to-list 'default-frame-alist '(alpha . 96))
 
 ;; (set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
 ;; (set-frame-parameter (selected-frame) 'alpha <both>)
@@ -317,4 +282,26 @@
                     ;; Also handle undocumented (<active> <inactive>) form.
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
-         90 '(100 . 100)))))
+         96 '(100 . 100)))))
+
+(defun elaiza-claude-get-api-key ()
+  "Get Claude API key from auth-source, create if needed."
+  (let* ((auth-source-creation-defaults
+          '((description . "Claude API key")))
+         (auth-source-creation-prompts
+          '((secret . "Claude API key for %h: ")))
+         (auth-info (nth 0 (auth-source-search
+                            :max 1
+                            :host "api.anthropic.com"
+                            :user "elaiza"
+                            :create t))))
+    (if auth-info (auth-info-password auth-info)
+      (error "Could not retrieve API key\nSave machine api.anthropic.com port https login elaiza password <your-api-key> in ~/.authinfo.gpg"))))
+
+(use-package! gptel
+  :config
+  ;; OPTIONAL configuration
+  (setq
+   gptel-model "claude-3-sonnet-20240229" ;  "claude-3-opus-20240229" also available
+   gptel-backend (gptel-make-anthropic "Claude"
+                   :stream t :key (elaiza-claude-get-api-key))))
