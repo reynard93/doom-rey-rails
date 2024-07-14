@@ -8,3 +8,6 @@
 (add-to-list 'org-structure-template-alist '("k" . "src kotlin"))
 (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
 (add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
+
+(add-hook! 'org-mode-hook #'org-modern-mode)
+(add-hook! 'org-agenda-finalize-hook #'org-modern-agenda)
