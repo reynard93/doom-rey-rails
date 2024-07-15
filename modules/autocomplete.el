@@ -6,7 +6,6 @@
 (after! company
   (setq company-dabbrev-downcase nil)
   (setq company-show-numbers t)
-  (setq company-idle-delay 0)
 
   (defun remove-company-duplicates (candidates)
     "Order the snippets / text depending of priority. CANDIDATES: Company candidates."
@@ -69,7 +68,7 @@
 (after! company
   (setq company-dabbrev-downcase nil)
   (setq company-show-quick-access t)
-  (setq company-idle-delay 0)
+  (setq company-idle-delay 0.05)
   (setq company-frontends '(company-preview-frontend)))
 
 (after! yasnippet
