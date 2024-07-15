@@ -234,6 +234,9 @@
                "b" #'display-in-side-window--bottom
                "l" #'display-in-side-window--left
                "r" #'display-in-side-window--right))
+(use-package! embark
+  :bind
+  (("C-c a" . embark-act)))
 
 (use-package! unity
   :defer t
