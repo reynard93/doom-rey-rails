@@ -69,9 +69,10 @@
 (after! company
   (setq company-dabbrev-downcase nil)
   (setq company-show-quick-access t)
-  (setq company-idle-delay 0))
+  (setq company-idle-delay 0)
+  (setq company-frontends '(company-preview-frontend)))
 
 (after! yasnippet
-    (add-to-list 'yas-snippet-dirs (concat doom-private-dir "user/snippets/"))
-    (yas-load-directory (concat doom-private-dir "snippets/"))
-    (yas-load-directory (concat doom-private-dir "user/snippets/")))
+  (add-to-list 'yas-snippet-dirs (concat doom-private-dir "user/snippets/"))
+  (yas-load-directory (concat doom-private-dir "snippets/"))
+  (yas-load-directory (concat doom-private-dir "user/snippets/")))
