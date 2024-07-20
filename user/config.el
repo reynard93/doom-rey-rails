@@ -214,7 +214,7 @@
 (add-hook! 'elfeed-search-mode-hook #'elfeed-update)
 
 ;; from christiantietze prevent compilation buffer from being killed
-(defmacro ct/embark-display-in-side-window (side)
+(defmacro ct/display-in-side-window (side)
   `(defun ,(intern (concat "display-in-side-window--" (symbol-name side))) (&optional buffer)
      (interactive "b")
      (when-let* ((buffer (or buffer (current-buffer)))
@@ -224,16 +224,11 @@
                                                      (window-parameters . ((no-delete-other-windows . t))))))
        (display-buffer buffer))))
 ;; creating the functions
-(ct/embark-display-in-side-window bottom)
-(ct/embark-display-in-side-window left)
-(ct/embark-display-in-side-window right)
+(ct/display-in-side-window bottom)
+(ct/display-in-side-window left)
+(ct/display-in-side-window right)
 ;; https://discourse.doomemacs.org/t/how-to-re-bind-keys/56
-(map! :after embark
-      :map embark-buffer-map
-      (:prefix ("s" . "side")
-               "b" #'display-in-side-window--bottom
-               "l" #'display-in-side-window--left
-               "r" #'display-in-side-window--right))
+
 (use-package! embark
   :bind
   (("C-c a" . embark-act)))
@@ -243,21 +238,24 @@
   :config (add-hook 'after-init-hook #'unity-mode))
 
 (use-package! dape
+  :init
+  ;; (setq dape-buffer-window-arrangement 'gud)
   :config
   ;; Kill compile buffer on build success
-  (add-hook 'dape-compile-hook 'kill-buffer)
+  ;; (add-hook 'dape-compile-hook 'kill-buffer)
   ;; Projectile users
   (setq dape-cwd-fn 'projectile-project-root)
-  (setq dape-buffer-window-arrangement 'gud)
   ;; Projectile users
   ;; (setq dape-cwd-fn 'projectile-project-root)
   )
 
 (add-to-list 'dape-configs
-             `(rdbg-attach-rails
-               ;; prefix-local "/Users/reynardtw/formflow-mono/packages/app/"
-               ;; prefix-remote "/usr/app/"
+             `(rdbg-rails
+               modes (ruby-mode)
+               prefix-local "/Users/reynardtw/Desktop/formflow-mono/packages/app"
+               host "127.0.0.1"
                port 5678
+               command "rdbg"
                :request "attach"
                ))
 
