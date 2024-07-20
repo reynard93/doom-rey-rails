@@ -25,3 +25,5 @@ user/packages.el
 user/snippets/*
 user/snippets/**/*
 !user/snippets/.keep
+
+modules/gptel.el

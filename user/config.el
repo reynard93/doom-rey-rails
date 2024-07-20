@@ -172,27 +172,15 @@
   (start-process "yabai" nil "yabai" "-m" "window" "--toggle" "zoom-fullscreen"))
 
 (setq mac-option-modifier 'alt)
-(map!  "A-h" #'yabai-window-left
-       "A-j" #'yabai-window-down
-       "A-k" #'yabai-window-up
-       "A-l" #'yabai-window-right
-       "A-f" #'yabai-fullscreen)
+(map! "A-h" #'yabai-window-left
+      "A-j" #'yabai-window-down
+      "A-k" #'yabai-window-up
+      "A-l" #'yabai-window-right
+      "A-f" #'yabai-fullscreen)
 
 (map! :map evil-normal-state-map
       :ngivo "C-h" nil
       :ngivo "C-l" nil)
-
-;; (map! :after evil
-;;       :map evil-org-mode-map
-;;       :ngivo "s-h" nil
-;;       :ngivo "s-j" nil
-;;       :ngivo "s-k" nil
-;;       :ngivo "s-l" nil
-;;       :ngivo "s-f" nil)
-
-;; using for yabai left
-;; (map!
-;;  "M-h" nil)
 
 (setq auto-save-default t)
 ;;org-mode
@@ -331,29 +319,6 @@ _r_: Restart
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
          96 '(100 . 100)))))
-
-(defun elaiza-claude-get-api-key ()
-  "Get Claude API key from auth-source, create if needed."
-  (let* ((auth-source-creation-defaults
-          '((description . "Claude API key")))
-         (auth-source-creation-prompts
-          '((secret . "Claude API key for %h: ")))
-         (auth-info (nth 0 (auth-source-search
-                            :max 1
-                            :host "api.anthropic.com"
-                            :user "elaiza"
-                            :create t))))
-    (if auth-info (auth-info-password auth-info)
-      (error "Could not retrieve API key\nSave machine api.anthropic.com port https login elaiza password <your-api-key> in ~/.authinfo.gpg"))))
-
-(use-package! gptel
-  :config
-  ;; OPTIONAL configuration
-  (setq
-   gptel-model "claude-3-sonnet-20240229" ;  "claude-3-opus-20240229" also available
-   gptel-backend (gptel-make-anthropic "Claude"
-                   :stream t :key (elaiza-claude-get-api-key))))
-
 
 (use-package! codeium
   :init

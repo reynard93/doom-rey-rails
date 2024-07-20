@@ -122,18 +122,6 @@
 (setq avy-single-candidate-jump t)
 (setq evil-want-visual-char-semi-exclusive t)
 
-;; Window Control
-(map! :ni "M-k" #'evil-window-up)
-(map! :ni "M-j" #'evil-window-down)
-(map! :ni "M-h" #'evil-window-left)
-(map! :ni "M-l" #'evil-window-right)
-
-;; VTerm Window
-(map! :map vterm-mode-map "M-k" #'evil-window-up)
-(map! :map vterm-mode-map "M-j" #'evil-window-down)
-(map! :map vterm-mode-map "M-h" #'evil-window-left)
-(map! :map vterm-mode-map "M-l" #'evil-window-right)
-
 (after! tide
   (map! :map tide-mode-map :localleader "f" #'tide-fix)
   (map! :map tide-mode-map :localleader "R" #'tide-rename-symbol)
