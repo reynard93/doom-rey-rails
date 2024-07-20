@@ -416,7 +416,10 @@
 ;; would not work well with vertico-multiform dk what's that
 (use-package! vertico-posframe
   :init
-  (setq vertico-posframe-parameters
-        '((left-fringe . 8)
-          (right-fringe . 8)))
   (vertico-posframe-mode 1))
+
+;; make fonts look better with anti-aliasing
+(setq mac-allow-anti-aliasing t)
+
+;; Integrate with MacOS clipboard
+(setq select-enable-clipboard t)

@@ -9,6 +9,7 @@
 (load (expand-file-name "modules/lsp.el" doom-user-dir))
 (load (expand-file-name "modules/org.el" doom-user-dir))
 (load (expand-file-name "modules/autocomplete.el" doom-user-dir))
+(load (expand-file-name "modules/teaching.el" doom-user-dir))
 
 (if (not (file-exists-p "~/.doom.d/user/config.el"))
     (progn
