@@ -1,5 +1,5 @@
 ;; MOST IMPORTANT CONFIG - Set your project folders
-(setq projectile-project-search-path '("~/Desktop/formflow-mono", "~/Projects"))
+(setq projectile-project-search-path '("~/Desktop/formflow-mono", "~/org"))
 
 (setq user-full-name "Reynard Lee Yu Ling"
       user-mail-address "reynard.lee@thoughtworks.com.sg")
@@ -58,7 +58,7 @@
 
 ;; Ignoring some folders on search
 (after! projectile
-  (setq projectile-globally-ignored-directories '("flow-typed" "node_modules" "~/.emacs.d/.local/" ".idea" ".vscode" ".ensime_cache" ".eunit" ".git" ".hg" ".fslckout" "_FOSSIL_" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" ".ccls-cache" ".cache" ".clangd")))
+  (setq projectile-globally-ignored-directories '("reynardtw" "flow-typed" "node_modules" "~/.emacs.d/.local/" ".idea" ".vscode" ".ensime_cache" ".eunit" ".git" ".hg" ".fslckout" "_FOSSIL_" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" ".ccls-cache" ".cache" ".clangd")))
 
 ;; Add your custom searches (in rails folders)
 (after! projectile-rails
@@ -320,31 +320,32 @@ _r_: Restart
               100)
          96 '(100 . 100)))))
 
-(use-package! codeium
-  :init
-  ;; use globally
-  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
-  :config
-  (setq use-dialog-box nil) ;; do not use popup boxes
-  ;; get codeium status in the modeline
-  (setq codeium-mode-line-enable
-        (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
-  (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
-  ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
-  (setq codeium-api-enabled
-        (lambda (api)
-          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
-  ;; You can overwrite all the codeium configs!
-  ;; for example, we recommend limiting the string sent to codeium for better performance
-  (defun my-codeium/document/text ()
-    (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (min (+ (point) 1000) (point-max))))
-  ;; if you change the text, you should also change the cursor_offset
-  ;; warning: this is measured by UTF-8 encoded bytes
-  (defun my-codeium/document/cursor_offset ()
-    (codeium-utf8-byte-length
-     (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
-  (setq codeium/document/text 'my-codeium/document/text)
-  (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
+; DISABLED - i DONT NEED YOU
+; (use-package! codeium
+;   :init
+;   ;; use globally
+;   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+;   :config
+;   (setq use-dialog-box nil) ;; do not use popup boxes
+;   ;; get codeium status in the modeline
+;   (setq codeium-mode-line-enable
+;         (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
+;   (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
+;   ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
+;   (setq codeium-api-enabled
+;         (lambda (api)
+;           (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
+;   ;; You can overwrite all the codeium configs!
+;   ;; for example, we recommend limiting the string sent to codeium for better performance
+;   (defun my-codeium/document/text ()
+;     (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (min (+ (point) 1000) (point-max))))
+;   ;; if you change the text, you should also change the cursor_offset
+;   ;; warning: this is measured by UTF-8 encoded bytes
+;   (defun my-codeium/document/cursor_offset ()
+;     (codeium-utf8-byte-length
+;      (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
+;   (setq codeium/document/text 'my-codeium/document/text)
+;   (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
 
 (use-package! consult
   ;; Enable automatic preview at point in the *Completions* buffer. This is

@@ -23,17 +23,16 @@
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       modeline          ; snazzy, Atom-inspired modeline, plus API
+       (modeline +light)
        nav-flash         ; blink cursor line after big motions
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        vc-gutter         ; vcs diff in the fringe
-       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
-       file-templates    ; auto-snippets for empty files
+       ;; file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        format          ; automated prettiness
        multiple-cursors  ; editing in many places at once
