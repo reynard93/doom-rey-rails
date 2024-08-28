@@ -120,6 +120,7 @@
 
 ;; Improve avy
 (setq avy-single-candidate-jump t)
+(setq avy-all-windows t)
 (setq evil-want-visual-char-semi-exclusive t)
 
 (after! tide

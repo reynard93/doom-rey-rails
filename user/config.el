@@ -202,19 +202,19 @@
 (add-hook! 'elfeed-search-mode-hook #'elfeed-update)
 
 ;; from christiantietze prevent compilation buffer from being killed
-(defmacro ct/display-in-side-window (side)
-  `(defun ,(intern (concat "display-in-side-window--" (symbol-name side))) (&optional buffer)
-     (interactive "b")
-     (when-let* ((buffer (or buffer (current-buffer)))
-                 (display-buffer-overriding-action '((display-buffer-in-side-window)
-                                                     (dedicated . t)
-                                                     (side . ,side)
-                                                     (window-parameters . ((no-delete-other-windows . t))))))
-       (display-buffer buffer))))
+;; (defmacro ct/display-in-side-window (side)
+;;   `(defun ,(intern (concat "display-in-side-window--" (symbol-name side))) (&optional buffer)
+;;      (interactive "b")
+;;      (when-let* ((buffer (or buffer (current-buffer)))
+;;                  (display-buffer-overriding-action '((display-buffer-in-side-window)
+;;                                                      (dedicated . t)
+;;                                                      (side . ,side)
+;;                                                      (window-parameters . ((no-delete-other-windows . t))))))
+;;        (display-buffer buffer))))
 ;; creating the functions
-(ct/display-in-side-window bottom)
-(ct/display-in-side-window left)
-(ct/display-in-side-window right)
+;; (ct/display-in-side-window bottom)
+;; (ct/display-in-side-window left)
+;; (ct/display-in-side-window right)
 ;; https://discourse.doomemacs.org/t/how-to-re-bind-keys/56
 
 (use-package! embark
@@ -238,25 +238,25 @@
   )
 
 ;; https://raine.ing/posts/emacs-dape/
-(map! :map dap-mode-map
+(map! :map dape-mode-map
       :leader
-      :prefix ("d" . "dap")
-      :desc "dap hydra" "h" #'hydra-dap/body
+      :prefix ("d" . "dape")
+      :desc "dape hydra" "h" #'hydra-dape/body
 
-      :desc "dap debug"   "s" #'dape
-      :desc "dap quit"    "q" #'dape-quit
-      :desc "dap restart" "r" #'dape-restart
+      :desc "dape debug"   "s" #'dape
+      :desc "dape quit"    "q" #'dape-quit
+      :desc "dape restart" "r" #'dape-restart
 
-      :desc "dap breakpoint toggle"     "b" #'dape-breakpoint-toggle
-      :desc "dap breakpoint remove all" "B" #'dape-breakpoint-remove-all
-      :desc "dap breakpoint log"        "l" #'dape-breakpoint-log
+      :desc "dape breakpoint toggle"     "b" #'dape-breakpoint-toggle
+      :desc "dape breakpoint remove all" "B" #'dape-breakpoint-remove-all
+      :desc "dape breakpoint log"        "l" #'dape-breakpoint-log
 
-      :desc "dap continue" "c" #'dape-continue
-      :desc "dap next"     "n" #'dape-next
-      :desc "dap step in"  "i" #'dape-step-in
-      :desc "dap step out" "o" #'dape-step-out
+      :desc "dape continue" "c" #'dape-continue
+      :desc "dape next"     "n" #'dape-next
+      :desc "dape step in"  "i" #'dape-step-in
+      :desc "dape step out" "o" #'dape-step-out
 
-      :desc "dap eval" "e" #'dape-evaluate-expression)
+      :desc "dape eval" "e" #'dape-evaluate-expression)
 
 (require 'hydra)
 (defhydra hydra-dap (:color pink :hint nil)
@@ -319,33 +319,6 @@ _r_: Restart
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
          96 '(100 . 100)))))
-
-; DISABLED - i DONT NEED YOU
-; (use-package! codeium
-;   :init
-;   ;; use globally
-;   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
-;   :config
-;   (setq use-dialog-box nil) ;; do not use popup boxes
-;   ;; get codeium status in the modeline
-;   (setq codeium-mode-line-enable
-;         (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
-;   (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
-;   ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
-;   (setq codeium-api-enabled
-;         (lambda (api)
-;           (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
-;   ;; You can overwrite all the codeium configs!
-;   ;; for example, we recommend limiting the string sent to codeium for better performance
-;   (defun my-codeium/document/text ()
-;     (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (min (+ (point) 1000) (point-max))))
-;   ;; if you change the text, you should also change the cursor_offset
-;   ;; warning: this is measured by UTF-8 encoded bytes
-;   (defun my-codeium/document/cursor_offset ()
-;     (codeium-utf8-byte-length
-;      (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
-;   (setq codeium/document/text 'my-codeium/document/text)
-;   (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
 
 (use-package! consult
   ;; Enable automatic preview at point in the *Completions* buffer. This is
