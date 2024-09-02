@@ -1,26 +1,5 @@
 ;;; misc.el -*- lexical-binding: t; -*-
 
-;; Google Translate
-
-(after! google-translate
-  (defun google-translate--search-tkk ()
-    "Search TKK."
-    (list 430675 2721866130)))
-
-(setq google-translate-default-source-language "en")
-(setq google-translate-default-target-language "pt")
-
-(map! :desc "Google Translate" :nv "C-c ! t" 'google-translate-query-translate)
-(map! :desc "Google Translate Reverse" :nv "C-c ! T" 'google-translate-query-translate-reverse)
-(map! :desc "Google Translate At Point" :nv "C-c t" 'google-translate-at-point)
-(map! :desc "Google Translate At Point reverse" :nv "C-c T" 'google-translate-at-point-reverse)
-
-(after! google-translate-default-ui
-  (defun google-translate--search-tkk ()
-    "Search TKK."
-    (list 430675 2721866130)))
-
-
 ;; Config Stuff
 (map! :leader :desc "Upgrade Doom Emacs on Rails" "h U" #'upgrade-doom-emacs-on-rails)
 (map! :leader :desc "Visit handbook" "f h" #'visit-handbook)
@@ -47,7 +26,7 @@
 ;; Change logo?
 (let ((logo (concat doom-private-dir "logo.png")))
   (when (file-exists-p logo)
-  (setq fancy-splash-image logo)))
+    (setq fancy-splash-image logo)))
 
 ;; Remove Accents
 (defun remove-accents (&optional @begin @end)

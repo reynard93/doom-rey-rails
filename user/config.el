@@ -73,11 +73,6 @@
 (setq ruby-indent-level 2)
 (setq standard-indent 2)
 
-;; Google Tradutor, source and target languages
-(setq google-translate-default-source-language "en")
-(setq google-translate-default-target-language "pt")
-
-
 ;; Rubocop on current file command
 (setq rubocop-on-current-file-command "bundle exec rubocop -A ") ;; SPC =
 
@@ -227,14 +222,12 @@
 
 (use-package! dape
   :init
-  ;; (setq dape-buffer-window-arrangement 'gud)
+  (setq dape-buffer-window-arrangement 'gud)
   :config
   ;; Kill compile buffer on build success
-  ;; (add-hook 'dape-compile-hook 'kill-buffer)
+  (add-hook 'dape-compile-hook 'kill-buffer)
   ;; Projectile users
   (setq dape-cwd-fn 'projectile-project-root)
-  ;; Projectile users
-  ;; (setq dape-cwd-fn 'projectile-project-root)
   )
 
 ;; https://raine.ing/posts/emacs-dape/
@@ -258,9 +251,10 @@
 
       :desc "dape eval" "e" #'dape-evaluate-expression)
 
-(require 'hydra)
-(defhydra hydra-dap (:color pink :hint nil)
-  "
+(after! hydra
+
+  (defhydra hydra-dape (:color pink :hint nil)
+    "
 ^Dape Hydra^
 ------------------------------------------------
 _n_: Next       _e_: Eval    _Q_: Disconnect
@@ -270,24 +264,26 @@ _c_: Continue
 _r_: Restart
 
 "
-  ("n" #'dape-next)
-  ("i" #'dape-step-in)
-  ("o" #'dape-step-out)
-  ("c" #'dape-continue)
-  ("e" #'dape-evaluate-expression)
-  ("r" #'dape-restart)
-  ("q" nil "Quit" :color blue)
-  ("Q" #'dape-quit :color blue))
+    ("n" #'dape-next)
+    ("i" #'dape-step-in)
+    ("o" #'dape-step-out)
+    ("c" #'dape-continue)
+    ("e" #'dape-evaluate-expression)
+    ("r" #'dape-restart)
+    ("q" nil "Quit" :color blue)
+    ("Q" #'dape-quit :color blue))
+  )
+
 
 
 (add-to-list 'dape-configs
-             `(rdbg-rails
-               modes (ruby-mode)
-               prefix-local "/Users/reynardtw/Desktop/formflow-mono/packages/app"
+             `(ruby-rdbg
+               modes (ruby-ts-mode ruby-mode)
+               ;; prefix-local "/Users/reynardtw/Desktop/formflow-mono/packages/app"
                host "127.0.0.1"
                port 5678
                command "rdbg"
-               :request "attach"
+               ;; :request "attach"
                ))
 
 (use-package! ready-player
@@ -403,3 +399,36 @@ _r_: Restart
 
 ;; Integrate with MacOS clipboard
 (setq select-enable-clipboard t)
+
+;; https://webcache.googleusercontent.com/search?q=cache%3Ahttps%3A%2F%2Fsunyour.org%2Fpost%2Fdoom-emacs%E9%87%8Ctelega%E7%9A%84%E9%85%8D%E7%BD%AE%2F&oq=cache%3Ahttps%3A%2F%2Fsunyour.org%2Fpost%2Fdoom-emacs%E9%87%8Ctelega%E7%9A%84%E9%85%8D%E7%BD%AE%2F&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg6MgYIAhAuGEDSAQgzMTEwajBqNKgCALACAQ&sourceid=chrome&ie=UTF-8
+
+;; Requires installing tdlib
+;; https://tdlib.github.io/td/build.html?language=Other
+(use-package! telega
+  :commands (telega)
+  :defer t
+  :bind ("C-c t" . #'telega)
+  :init
+  (unless (display-graphic-p) (setq telega-use-images nil))
+  :hook
+  ('telega-root-mode . #'evil-emacs-state)
+  ('telega-chat-mode . #'evil-emacs-state)
+  ('telega-chat-mode . #'yas-minor-mode)
+  ('telega-chat-mode . (lambda ()
+                         (set-company-backend! 'telega-chat-mode
+                           (append '(telega-company-emoji
+                                     telega-company-username
+                                     telega-company-hashtag)
+                                   (when (telega-chat-bot-p telega-chatbuf--chat)
+                                     '(telega-company-botcmd))))
+                         (company-mode 1)))
+  ('telega-chat-pre-message . #'telega-msg-ignore-blocked-sender)
+  :config
+  (setq telega-proxies
+        (list '(:server "127.0.0.1" :port 1086 :enable t
+                :type (:@type "proxyTypeSocks5"))))
+  (set-popup-rule! "^\\*Telega Root"
+    :side 'right :size 100 :quit nil :modeline t)
+  (set-popup-rule! "^◀\\(\\[\\|<\\|{\\).*\\(\\]\\|>\\|}\\)"
+    :side 'right :size 100 :quit nil :modeline t)
+  (telega-mode-line-mode 1))

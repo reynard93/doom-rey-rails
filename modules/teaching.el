@@ -12,6 +12,13 @@
   (org-appear-autolinks nil)
   (org-appear-autosubmarkers t))
 
+;; mainly for erd diagrams
+(use-package! ob-diagrams
+  :custom
+  (ob-diagrams-erd-cli "/Users/reynardtw/.local/bin/erd"))
+
+;; better org-present?
+;; (use-package! dslide)
 
 ;; Better list behavior
 (use-package! org-autolist)
