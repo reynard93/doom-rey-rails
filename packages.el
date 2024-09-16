@@ -1,6 +1,7 @@
 (package! harpoon)
 (package! ob-diagrams :recipe (:host github :repo "emacsbliss/ob-diagrams"))
 
+(package! telega)
 (package! evil-tutor :pin "4e124cd3911dc0d1b6817ad2c9e59b4753638f28")
 (package! robe :disable t)
 

@@ -220,9 +220,10 @@
   :defer t
   :config (add-hook 'after-init-hook #'unity-mode))
 
+;; https://silosneeded.com/en/2024/04/configuring-dape
 (use-package! dape
   :init
-  (setq dape-buffer-window-arrangement 'gud)
+  (setq dape-buffer-window-arrangement 'right)
   :config
   ;; Kill compile buffer on build success
   (add-hook 'dape-compile-hook 'kill-buffer)
@@ -275,15 +276,24 @@ _r_: Restart
   )
 
 
-
+;; # 5678
 (add-to-list 'dape-configs
              `(ruby-rdbg
                modes (ruby-ts-mode ruby-mode)
-               ;; prefix-local "/Users/reynardtw/Desktop/formflow-mono/packages/app"
                host "127.0.0.1"
-               port 5678
+               port 5680
                command "rdbg"
-               ;; :request "attach"
+               ))
+
+;; below still does not work
+;; found the port by running the tests just once
+(add-to-list 'dape-configs
+             `(rspec-rdbg
+               modes (ruby-ts-mode ruby-mode)
+               port 5680
+               prefix-local "~/Desktop/formflow-mono/packages/app"
+               command "rdbg -A"
+               :cwd "~/Desktop/formflow-mono/packages/app"
                ))
 
 (use-package! ready-player
@@ -400,8 +410,8 @@ _r_: Restart
 ;; Integrate with MacOS clipboard
 (setq select-enable-clipboard t)
 
-;; https://webcache.googleusercontent.com/search?q=cache%3Ahttps%3A%2F%2Fsunyour.org%2Fpost%2Fdoom-emacs%E9%87%8Ctelega%E7%9A%84%E9%85%8D%E7%BD%AE%2F&oq=cache%3Ahttps%3A%2F%2Fsunyour.org%2Fpost%2Fdoom-emacs%E9%87%8Ctelega%E7%9A%84%E9%85%8D%E7%BD%AE%2F&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg6MgYIAhAuGEDSAQgzMTEwajBqNKgCALACAQ&sourceid=chrome&ie=UTF-8
-
+;; https://sunyour.org/post/telega.el%E9%98%B6%E6%AE%B5%E6%80%A7%E9%85%8D%E7%BD%AE%E5%B0%8F%E7%BB%93/
+;; https://blog.liuliancao.com/posts/emacs-xia-telega-de-anzhuang-he-shiyong/
 ;; Requires installing tdlib
 ;; https://tdlib.github.io/td/build.html?language=Other
 (use-package! telega
@@ -410,6 +420,7 @@ _r_: Restart
   :bind ("C-c t" . #'telega)
   :init
   (unless (display-graphic-p) (setq telega-use-images nil))
+  (setq telega-server-libs-prefix "~/td/tdlib")
   :hook
   ('telega-root-mode . #'evil-emacs-state)
   ('telega-chat-mode . #'evil-emacs-state)
@@ -424,11 +435,20 @@ _r_: Restart
                          (company-mode 1)))
   ('telega-chat-pre-message . #'telega-msg-ignore-blocked-sender)
   :config
-  (setq telega-proxies
-        (list '(:server "127.0.0.1" :port 1086 :enable t
-                :type (:@type "proxyTypeSocks5"))))
+  ;; what are these proxies for?
+  ;; (setq telega-proxies
+  ;;       (list '(:server "127.0.0.1" :port 1086 :enable t
+  ;;               :type (:@type "proxyTypeSocks5"))))
+  (set-evil-initial-state! '(telega-root-mode telega-chat-mode) 'emacs)
+  (setq telega-chat-reply-prompt "<<< "
+        telega-chat-edit-prompt "+++ "
+        telega-chat-use-markdown-version nil
+        telega-animation-play-inline t
+        telega-emoji-use-images nil
+        telega-sticker-set-download t)
   (set-popup-rule! "^\\*Telega Root"
-    :side 'right :size 100 :quit nil :modeline t)
+                   :side 'right :size 100 :quit nil :modeline t)
   (set-popup-rule! "^◀\\(\\[\\|<\\|{\\).*\\(\\]\\|>\\|}\\)"
-    :side 'right :size 100 :quit nil :modeline t)
-  (telega-mode-line-mode 1))
+                   :side 'right :size 100 :quit nil :modeline t)
+  (telega-mode-line-mode 1)
+  )
