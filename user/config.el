@@ -452,3 +452,49 @@ _r_: Restart
                    :side 'right :size 100 :quit nil :modeline t)
   (telega-mode-line-mode 1)
   )
+
+(setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "debug-adapters")))
+
+;; https://duncanlock.net/blog/2023/05/27/debugging-with-an-existing-browser-instance-or-brave-in-vscode/
+(setq dape-configs-port 9229)
+;; (add-to-list 'dape-configs
+;;              `(js-debug-chrome
+;;                modes (js-mode js-ts-mode)
+;;                ;; command "node"
+;;                ;; command-cwd ,(file-name-concat dape-configs-adapter-dir "js-debug" "dist")
+;;                ;; command-args ("src/dapDebugServer.js" ,(format "%d" dape-configs-port))
+;;                port dape-configs-port
+;;                :type "chrome"
+;;                :runtimeExecutable "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser.exe"
+;;                :trace t
+;;                :url ,(lambda ()
+;;                        (read-string "Url: "
+;;                                     "http://localhost:3000"))
+;;                :webRoot dape-cwd-fn
+;;                :outputCapture "console"))
+(setq dape-debug t)
+(setq dape-stack-trace-levels 4)
+(add-to-list 'dape-configs
+	     `(js-debug
+	       modes (js-mode js-ts-mode)
+               command "node"
+               command-cwd ,(file-name-concat dape-configs-adapter-dir "js-debug")
+               command-args ("src/dapDebugServer.js" ,(format "%d" dape-configs-port))
+	       port dape-configs-port
+               :name "DEBUG"
+               ;; :sourceMaps nil
+               ;; :pauseForSourceMap nil
+               ;; :userDataDir nil ;; REMOVED this and finally start
+	       :type "pwa-chrome"
+               :trace nil
+               :resolveSourceMapLocations ["!${workspaceFolder}/packages/app/node_modules/**",
+                                           "!/node_modules/**"]
+               ;; :skipFiles "[\"**/node_modules/**\"]" ;; what is the difference between skipFIles and resolveSourceMap
+	       :url ,(lambda ()
+		       (read-string "Url: "
+				    "http://applicant.localhost:3000")) ;; get from RAILS_host
+	       :webRoot ,(lambda ()
+			   (read-string "Root: "
+				        (funcall dape-cwd-fn)))
+                                        ;:outputCapture "console"
+               ))

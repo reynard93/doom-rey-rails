@@ -15,6 +15,8 @@
 ;; mainly for erd diagrams
 (use-package! ob-diagrams
   :custom
+  ;; this node package is just NOT working tried different electron versions
+  ;; (ob-diagrams-cli "~/.nvm/versions/node/v21.7.3/bin/diagrams")
   (ob-diagrams-erd-cli "/Users/reynardtw/.local/bin/erd"))
 
 ;; better org-present?
