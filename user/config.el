@@ -414,44 +414,44 @@ _r_: Restart
 ;; https://blog.liuliancao.com/posts/emacs-xia-telega-de-anzhuang-he-shiyong/
 ;; Requires installing tdlib
 ;; https://tdlib.github.io/td/build.html?language=Other
-(use-package! telega
-  :commands (telega)
-  :defer t
-  :bind ("C-c t" . #'telega)
-  :init
-  (unless (display-graphic-p) (setq telega-use-images nil))
-  (setq telega-server-libs-prefix "~/td/tdlib")
-  :hook
-  ('telega-root-mode . #'evil-emacs-state)
-  ('telega-chat-mode . #'evil-emacs-state)
-  ('telega-chat-mode . #'yas-minor-mode)
-  ('telega-chat-mode . (lambda ()
-                         (set-company-backend! 'telega-chat-mode
-                           (append '(telega-company-emoji
-                                     telega-company-username
-                                     telega-company-hashtag)
-                                   (when (telega-chat-bot-p telega-chatbuf--chat)
-                                     '(telega-company-botcmd))))
-                         (company-mode 1)))
-  ('telega-chat-pre-message . #'telega-msg-ignore-blocked-sender)
-  :config
-  ;; what are these proxies for?
-  ;; (setq telega-proxies
-  ;;       (list '(:server "127.0.0.1" :port 1086 :enable t
-  ;;               :type (:@type "proxyTypeSocks5"))))
-  (set-evil-initial-state! '(telega-root-mode telega-chat-mode) 'emacs)
-  (setq telega-chat-reply-prompt "<<< "
-        telega-chat-edit-prompt "+++ "
-        telega-chat-use-markdown-version nil
-        telega-animation-play-inline t
-        telega-emoji-use-images nil
-        telega-sticker-set-download t)
-  (set-popup-rule! "^\\*Telega Root"
-                   :side 'right :size 100 :quit nil :modeline t)
-  (set-popup-rule! "^◀\\(\\[\\|<\\|{\\).*\\(\\]\\|>\\|}\\)"
-                   :side 'right :size 100 :quit nil :modeline t)
-  (telega-mode-line-mode 1)
-  )
+;; (use-package! telega
+;;   :commands (telega)
+;;   :defer t
+;;   :bind ("C-c t" . #'telega)
+;;   :init
+;;   (unless (display-graphic-p) (setq telega-use-images nil))
+;;   (setq telega-server-libs-prefix "~/td/tdlib")
+;;   :hook
+;;   ('telega-root-mode . #'evil-emacs-state)
+;;   ('telega-chat-mode . #'evil-emacs-state)
+;;   ('telega-chat-mode . #'yas-minor-mode)
+;;   ('telega-chat-mode . (lambda ()
+;;                          (set-company-backend! 'telega-chat-mode
+;;                            (append '(telega-company-emoji
+;;                                      telega-company-username
+;;                                      telega-company-hashtag)
+;;                                    (when (telega-chat-bot-p telega-chatbuf--chat)
+;;                                      '(telega-company-botcmd))))
+;;                          (company-mode 1)))
+;;   ('telega-chat-pre-message . #'telega-msg-ignore-blocked-sender)
+;;   :config
+;;   ;; what are these proxies for?
+;;   ;; (setq telega-proxies
+;;   ;;       (list '(:server "127.0.0.1" :port 1086 :enable t
+;;   ;;               :type (:@type "proxyTypeSocks5"))))
+;;   (set-evil-initial-state! '(telega-root-mode telega-chat-mode) 'emacs)
+;;   (setq telega-chat-reply-prompt "<<< "
+;;         telega-chat-edit-prompt "+++ "
+;;         telega-chat-use-markdown-version nil
+;;         telega-animation-play-inline t
+;;         telega-emoji-use-images nil
+;;         telega-sticker-set-download t)
+;;   (set-popup-rule! "^\\*Telega Root"
+;;                    :side 'right :size 100 :quit nil :modeline t)
+;;   (set-popup-rule! "^◀\\(\\[\\|<\\|{\\).*\\(\\]\\|>\\|}\\)"
+;;                    :side 'right :size 100 :quit nil :modeline t)
+;;   (telega-mode-line-mode 1)
+;;   )
 
 (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "debug-adapters")))
 
