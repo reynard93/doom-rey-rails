@@ -24,8 +24,8 @@
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        (modeline +light)
-       nav-flash         ; blink cursor line after big motions
-       ophints           ; highlight the region an operation acts on
+       ;; nav-flash         ; blink cursor line after big motions
+       ;; ophints           ; highlight the region an operation acts on
        ;; (popup +defaults)   ; tame sudden yet inevitable temporary windows
        vc-gutter         ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
