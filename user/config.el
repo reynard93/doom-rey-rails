@@ -498,3 +498,38 @@ _r_: Restart
 				        (funcall dape-cwd-fn)))
                                         ;:outputCapture "console"
                ))
+
+;; from noteYoda Section
+;; https://dotdoom.rgoswami.me/config.html#text-3
+(use-package! org-ref
+  :init
+  (with-eval-after-load 'ox
+    (defun my/org-ref-process-buffer--html (backend)
+      "Preprocess `org-ref' citations to HTML format.
+
+  Do this only if the export backend is `html' or a derivative of
+  that."
+      ;; `ox-hugo' is derived indirectly from `ox-html'.
+      ;; ox-hugo <- ox-blackfriday <- ox-md <- ox-html
+      (when (org-export-derived-backend-p backend 'html)
+        (org-ref-process-buffer 'html)))
+    (add-to-list 'org-export-before-parsing-hook #'my/org-ref-process-buffer--html))
+  :config
+  (setq
+   org-ref-completion-library 'org-ref-ivy-cite
+   org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+   bibtex-completion-bibliography (list (concat (getenv "HOME") "/GDrive/zotLib.bib"))
+   bibtex-completion-notes-path (concat (getenv "HOME") "/org/bibnotes.org")
+   org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+   org-ref-notes-directory (concat (getenv "HOME") "/org/")
+   org-ref-notes-function 'orb-edit-notes
+   ))
+
+
+
+
+
+
+
+
+;; Magit is just rough for me and really slow
