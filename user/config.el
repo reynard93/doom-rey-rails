@@ -525,11 +525,20 @@ _r_: Restart
    org-ref-notes-function 'orb-edit-notes
    ))
 
-
-
-
-
-
-
-
 ;; Magit is just rough for me and really slow
+(use-package! eee
+  :config
+
+  ;; Should have wezterm or alacritty installed, more terminal application is supporting...
+  ;; Issues and pull requests are welcome
+  ;; (setq ee-terminal-command "wezterm")
+
+  ;; Define key bindings using the `map!` macro
+  (map! :leader                      ;; Use `space` as the leader key
+        "f z" #'ee-find               ;; Space f for ee-find
+        "g g" #'ee-lazygit            ;; Space g for ee-lazygit
+        "y" #'ee-yazi-project       ;; Space y for ee-yazi-project
+        "Y" #'ee-yazi               ;; Space f for ee-yazi with C-x C-f
+        "r /" #'ee-rg             ;; C-S-f for ee-rg
+        "M-f" #'ee-line)            ;; M-f for ee-line in normal mode
+  )
