@@ -13,8 +13,47 @@
 
 (package! string-inflection :pin "fd7926ac17293e9124b31f706a4e8f38f6a9b855")
 
-(if (file-exists-p (expand-file-name "user/packages.el" doom-user-dir))
-    (load (expand-file-name "user/packages.el" doom-user-dir))
-  (progn
-    (shell-command "cp ~/.config/doom/user/examples/packages.el ~/.config/doom/user/packages.el")
-    (load (expand-file-name "user/packages.el" doom-user-dir))))
+(package! hydra)
+(package! unity :recipe (:host github :repo "elizagamedev/unity.el" :branch "main"))
+(package! pg :recipe (:host github :repo "emarsden/pg-el" :branch "main"))
+(package! pgmacs :recipe (:host github :repo "emarsden/pgmacs" :branch "main")) ; keeps hanging
+(package! dape :recipe (:host github :repo "svaante/dape" :branch "master"))
+(package! embark)
+(package! ready-player :recipe (:host github :repo "xenodium/ready-player" :branch "main"))
+(package! dslide
+  :recipe (:host github
+           :repo "positron-solutions/dslide"))
+
+;; for opening magit buffers within org documents use orgit which mpi might alrdy have or i need to (require 'orgit)
+
+(package! gptel)
+
+(package! ob-http :recipe (:host github :repo "ag91/ob-http" :branch "master"))
+;; (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
+
+(package! vertico-posframe)
+(package! plz)
+(package! dired+)
+
+;; https://github.com/Lambda-Emacs/lambda-emacs
+;; packages required for teaching
+(package! org-appear)
+(package! org-autolist)
+(package! ox-hugo)
+(package! ox-pandoc)
+
+;; https://mclare.blog/posts/how-i-org/
+(package! org-cliplink)
+(package! org-download)
+(package! org-modern)
+(package! org-mime)
+(package! org-pomodoro)
+(package! org-projectile)
+(package! org-ql)
+(package! org-rich-yank)
+
+
+(package! org-ref)
+
+;; don't specify files won't pull in the shell scripts
+(package! eee :recipe (:host github :repo "eval-exec/eee.el" :branch "main" :files ("*.el" "*.sh")))
