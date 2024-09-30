@@ -41,15 +41,26 @@
                                  (concat user-emacs-directory "software/")))))
 
 ;; Drag and drop images to Emacs org-mode. Courtesy of abo-abo.
-;; https://github.com/abo-abo/org-download.
+;; https://github.com/abo-abo/org-download. requires brew install pngpaste
 
 (use-package! org-download
   :commands (org-download-yank org-download-screenshot org-download-image)
   :custom
   (org-download-method 'directory)
-  (org-download-image-dir (concat org-directory "org-pictures/"))
+  (org-download-image-dir (concat org-directory "/org-pictures/"))
   (org-download-image-latex-width 500)
-  (org-download-timestamp "%Y-%m-%d"))
+  ;; (org-download-timestamp "%Y-%m-%d") ;; somehow this only allows me to paste 1 picture a day
+  )
+
+;; does not work, keep giving me invalid url
+;; (defun org-download-named-screenshot (fname)
+;;   (interactive "FEnter Filename:")
+;;   (make-directory (file-name-directory fname) t)
+;;   (if (functionp org-download-screenshot-method)
+;;       (funcall org-download-screenshot-method fname)
+;;     (shell-command-to-string
+;;      (format org-download-screenshot-method fname)))
+;;   (org-download-image fname))
 
 ;;; Org Export Extensions
 ;;;; Ox-Pandoc
