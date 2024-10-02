@@ -101,20 +101,6 @@ Version 2015-06-08"
   (find-file (concat doom-private-dir "user/config.el"))
   (message "Welcome to your settings file!"))
 
-(defun visit-user-packages ()
-  "Visit the packages.el."
-  (interactive)
-  (find-file (concat doom-private-dir "user/packages.el"))
-  (message "Welcome to your packages file!"))
-
-(defun visit-user-init ()
-  "Visit the init.el."
-  (interactive)
-  (find-file (concat doom-private-dir "user/init.el"))
-  (message "Welcome to your init file!"))
-
-(map! :leader :desc "Visit User Config" "fm" 'visit-config-utils)
-(map! :leader :desc "Visit User Init" "fi" 'visit-user-init)
 (map! :leader :desc "Visit User Packages" "fI" 'visit-user-packages)
 
 (when (not (file-exists-p "~/.pryrc")) (shell-command "cp ~/.config/doom/user/examples/.pry-example ~/.pryrc"))
