@@ -51,6 +51,7 @@
 (package! org-projectile)
 (package! org-ql)
 (package! org-rich-yank)
+(package! org-protocol-capture-html)
 
 
 (package! org-ref)

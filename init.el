@@ -31,7 +31,7 @@
        ;; (popup +defaults)   ; tame sudden yet inevitable temporary windows
        vc-gutter         ; vcs diff in the fringe
        (treemacs +lsp)      ; a project drawer, like neotree but cooler maybe responsible for ts tripping
-       ;; workspaces        ; tab emulation, persistence & separate workspaces
+       workspaces        ; tab emulation, persistence & separate workspaces
        ;; indent-guides     ; highlighted indent columns
 
        :editor
