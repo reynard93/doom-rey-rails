@@ -758,3 +758,7 @@
             (ruby-add-parameter--without-existing-parameters args))))))
 
   (map! :mode ruby-mode :localleader :desc "Add parameter to def" "a" #'ruby-add-parameter))
+
+(after! auto-hide
+  :config
+  (add-to-list 'auto-hide-language-config '(ruby-ts-mode (function-node . "function_definition") (body-field . "body"))))

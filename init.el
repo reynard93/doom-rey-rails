@@ -60,7 +60,8 @@
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
        lsp                 ; M-x vscode
-       ;; magit             ; a git porcelain for Emacs ; more used to lg through eee
+       magit             ; a git porcelain for Emacs ; more used to lg through eee
+       tree-sitter
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
        ;; (debugger)          ; FIXME stepping through code, to help you add bugs
@@ -85,17 +86,17 @@
 
        :lang
        emacs-lisp        ; drown in parentheses
-       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
        markdown          ; writing docs for people to ignore
        sh                ; she sells {ba,z,fi}sh shells on the C xor
-       (web +lsp)               ; the tubes
+       (web +lsp +tree-sitter)               ; the tubes
        (yaml +lsp)
        (json +lsp)              ; At least it ain't XML
        (python +lsp +pyright +pyenv) ; beautiful is better than ugly
-       (ruby +rails +lsp +rbenv)     ; Change from rbenv to something else if you use another thing
+       (ruby +rails +lsp +rbenv +tree-sitter)     ; Change from rbenv to something else if you use another thing
        (org +roam2)
        rest              ; Emacs as a REST client
-       rust                ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (rust +tree-sitter)                ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;gdscript          ; the language you waited for
        ;;(go +lsp)         ; the hipster dialect
        ;;(graphql +lsp)    ; Give queries a REST

@@ -518,7 +518,8 @@ _r_: Restart
   (setq
    org-ref-completion-library 'org-ref-ivy-cite
    org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
-   bibtex-completion-bibliography (list (concat (getenv "HOME") "/GDrive/zotLib.bib"))
+   ;; bibtex-completion-bibliography (list (concat (getenv "HOME") "/GDrive/zotLib.bib")
+                                        ;; )
    bibtex-completion-notes-path (concat (getenv "HOME") "/org/bibnotes.org")
    org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
    org-ref-notes-directory (concat (getenv "HOME") "/org/")
@@ -542,3 +543,160 @@ _r_: Restart
         "r /" #'ee-rg             ;; C-S-f for ee-rg
         "M-f" #'ee-line)            ;; M-f for ee-line in normal mode
   )
+
+; First, we'll define our source and destination directories
+(defvar org-docx-source-dir "~/org/leetcode/")  ; Your org files location
+(defvar org-docx-export-dir "~/org-exports/")  ; Where .docx files will go
+(defvar org-gdoc-export-dir "~/org-exports/")  ; Where .docx files will go
+(defvar gdrive-sync-dir org-docx-export-dir)  ; Same as export dir in this case
+
+;; Ensure directories exist
+(unless (file-directory-p org-docx-export-dir)
+  (make-directory org-docx-export-dir t))
+;; https://www.kostaharlan.net/posts/google-docs-to-org-mode/
+;; Function to convert .org to .docx using Pandoc
+(defun convert-org-to-docx (org-file)
+  "Convert an org file to docx format using Pandoc with absolute path handling."
+  (message "Starting conversion of: %s" org-file)
+  (let* ((org-file-absolute (expand-file-name org-file))
+         (basename (file-name-base org-file-absolute))
+         (docx-file (expand-file-name (concat basename ".docx") org-docx-export-dir)))
+    (message "Will export from: %s" org-file-absolute)
+    (message "Will export to: %s" docx-file)
+    (if (executable-find "pandoc")
+        (let* ((default-directory (file-name-directory org-file-absolute))
+               (result (call-process "pandoc" nil "*Org-Docx-Export*" t
+                                   org-file-absolute
+                                   "-o" docx-file)))
+          (if (= 0 result)
+              (message "Successfully converted %s to %s" org-file-absolute docx-file)
+            (progn
+              (message "Error: Pandoc conversion failed with code %d" result)
+              (with-current-buffer "*Org-Docx-Export*"
+                (message "Pandoc output: %s" (buffer-string)))
+              (switch-to-buffer "*Org-Docx-Export*"))))
+      (message "Error: Pandoc not found in system PATH"))))
+
+(defun convert-org-to-gdoc (org-file)
+  "Convert an org file to HTML format optimized for Google Docs import."
+  (let* ((org-file-absolute (expand-file-name org-file))
+         (basename (file-name-base org-file-absolute))
+         (html-file (expand-file-name (concat basename ".html") org-gdoc-export-dir)))
+    ;; Using pandoc with options optimized for Google Docs
+    (call-process "pandoc" nil nil nil
+                 org-file-absolute
+                 "-o" html-file
+                 "--to=html5"
+                 "--standalone"
+                 "--css="  ; No CSS to keep it clean for Google Docs
+                 "--wrap=none"
+                 "--metadata" "pagetitle=''")
+    html-file))
+
+;; Function to sync with Google Drive using rclone
+(defun sync-to-gdrive ()
+  "Sync export directory to Google Drive using rclone."
+  (interactive)
+  (message "Starting sync to Google Drive...")
+  (let* ((output-buffer (generate-new-buffer " *rclone-output*"))
+         (command (format "rclone sync %s gdrive:Leetcode"
+                         (directory-file-name gdrive-sync-dir)))
+         (sentinel-fn
+          (lambda (process event output-buf)
+            (when (string= event "finished\n")
+              (if (= 0 (process-exit-status process))
+                  (progn
+                    (message "Sync to Google Drive completed successfully")
+                    (when (buffer-live-p output-buf)
+                      (kill-buffer output-buf)))
+                (progn
+                  (when (buffer-live-p output-buf)
+                    (with-current-buffer output-buf
+                      (message "Rclone error: %s" (buffer-string)))
+                    (kill-buffer output-buf))))))))
+    (make-process
+     :name "rclone-sync"
+     :buffer output-buffer
+     :command (list "bash" "-c" command)
+     :sentinel (lambda (process event)
+                (funcall sentinel-fn process event output-buffer)))))
+;; (defun sync-to-gdrive ()
+;;   "Sync export directory to Google Drive using rclone."
+;;   (interactive)
+;;   (message "Synching to Gdrive %s" (directory-file-name gdrive-sync-dir)) ; Add this line
+;;   (async-shell-command
+;;    (format "rclone sync %s gdrive:Leetcode"
+;;            (directory-file-name gdrive-sync-dir))))
+
+;; Auto-export hook function
+(defun org-auto-export-docx-on-save ()
+  "Export org to docx after save if in the correct directory."
+  (when (and buffer-file-name
+             (string-prefix-p (expand-file-name org-docx-source-dir)
+                            (buffer-file-name)))
+    (message "Converting to docx: %s" buffer-file-name)
+    (convert-org-to-docx buffer-file-name)
+    (sync-to-gdrive)))
+
+;; Add to org-mode-hook
+;; (add-hook 'org-mode-hook 'org-auto-export-docx-on-save)
+;; Use after! for Doom-specific configuration
+  ;; Add to local after-save-hook for org files
+;; this only works for org/leetcode directory which i have configured
+(add-hook! 'after-save-hook #'org-auto-export-docx-on-save)
+
+;; Optional: Command to manually trigger sync
+(defun force-org-docx-sync ()
+  "Manually convert all org files and sync to GDrive with detailed logging."
+  (interactive)
+  (message "Starting forced sync of all org files...")
+  (let ((org-files (directory-files-recursively org-docx-source-dir "\\.org$")))
+    (if org-files
+        (progn
+          (message "Found %d org files to process" (length org-files))
+          (dolist (org-file org-files)
+            (message "Processing: %s" org-file)
+            (convert-org-to-docx org-file)))
+      (message "No .org files found in %s" org-docx-source-dir))))
+
+(defun test-org-docx-setup ()
+  "Test the org-to-docx setup and report status."
+  (interactive)
+  (let ((report "Org-to-DOCX Setup Test Results:\n"))
+    ;; Check source directory
+    (setq report (concat report
+                        (format "\nSource Directory (%s):" org-docx-source-dir)
+                        (if (file-directory-p org-docx-source-dir)
+                            " ✓ EXISTS"
+                            " ✗ MISSING")))
+
+    ;; Check export directory
+    (setq report (concat report
+                        (format "\nExport Directory (%s):" org-docx-export-dir)
+                        (if (file-directory-p org-docx-export-dir)
+                            " ✓ EXISTS"
+                            " ✗ MISSING")))
+
+    ;; Check pandoc installation
+    (setq report (concat report
+                        "\nPandoc Installation:"
+                        (if (executable-find "pandoc")
+                            (format " ✓ FOUND (%s)"
+                                    (shell-command-to-string "pandoc --version | head -n 1"))
+                            " ✗ NOT FOUND")))
+
+    ;; Count org files
+    (let ((org-files (directory-files-recursively org-docx-source-dir "\\.org$")))
+      (setq report (concat report
+                          (format "\nOrg Files Found: %d" (length org-files))
+                          "\nFiles:\n"
+                          (mapconcat 'identity org-files "\n"))))
+
+    ;; Display report in new buffer
+    (with-current-buffer (get-buffer-create "*Org-Docx-Test*")
+      (erase-buffer)
+      (insert report)
+      (display-buffer (current-buffer)))))
+
+;; from the auto-hide package
+(global-auto-hide-mode)
