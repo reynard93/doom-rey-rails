@@ -140,38 +140,38 @@
 (setq-hook! 'typescript-mode-hook +format-with 'prettier)
 ;; read My new keybinds don't https://github.com/doomemacs/doomemacs/blob/35865ef5e89442e3809b8095199977053dd4210f/docs/faq.org#my-new-keybinds-dont-work
 
-(defun yabai-move-on-error (direction move-fn)
-  (interactive)
-  (condition-case nil
-      (funcall move-fn)
-    (user-error (start-process "yabai" nil "yabai" "-m" "window" "--focus" direction))))
+;; (defun yabai-move-on-error (direction move-fn)
+;;   (interactive)
+;;   (condition-case nil
+;;       (funcall move-fn)
+;;     (user-error (start-process "yabai" nil "yabai" "-m" "window" "--focus" direction))))
 
-(defun yabai-window-left ()
-  (interactive)
-  (yabai-move-on-error "west" #'windmove-left))
+;; (defun yabai-window-left ()
+;;   (interactive)
+;;   (yabai-move-on-error "west" #'windmove-left))
 
-(defun yabai-window-right ()
-  (interactive)
-  (yabai-move-on-error "east" #'windmove-right))
+;; (defun yabai-window-right ()
+;;   (interactive)
+;;   (yabai-move-on-error "east" #'windmove-right))
 
-(defun yabai-window-up ()
-  (interactive)
-  (yabai-move-on-error "north" #'windmove-up))
+;; (defun yabai-window-up ()
+;;   (interactive)
+;;   (yabai-move-on-error "north" #'windmove-up))
 
-(defun yabai-window-down ()
-  (interactive)
-  (yabai-move-on-error "south" #'windmove-down))
+;; (defun yabai-window-down ()
+;;   (interactive)
+;;   (yabai-move-on-error "south" #'windmove-down))
 
-(defun yabai-fullscreen ()
-  (interactive)
-  (start-process "yabai" nil "yabai" "-m" "window" "--toggle" "zoom-fullscreen"))
+;; (defun yabai-fullscreen ()
+;;   (interactive)
+;;   (start-process "yabai" nil "yabai" "-m" "window" "--toggle" "zoom-fullscreen"))
 
-(setq mac-option-modifier 'alt)
-(map! "A-h" #'yabai-window-left
-      "A-j" #'yabai-window-down
-      "A-k" #'yabai-window-up
-      "A-l" #'yabai-window-right
-      "A-f" #'yabai-fullscreen)
+;; (setq mac-option-modifier 'alt)
+;; (map! "A-h" #'yabai-window-left
+;;       "A-j" #'yabai-window-down
+;;       "A-k" #'yabai-window-up
+;;       "A-l" #'yabai-window-right
+;;       "A-f" #'yabai-fullscreen)
 
 (map! :map evil-normal-state-map
       :ngivo "C-h" nil

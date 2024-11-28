@@ -55,6 +55,7 @@
 
 
 (package! org-ref)
+(package! djvu)
 
 ;; don't specify files won't pull in the shell scripts
 (package! eee :recipe (:host github :repo "eval-exec/eee.el" :branch "main" :files ("*.el" "*.sh")))
